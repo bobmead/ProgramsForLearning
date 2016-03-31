@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MultiplicationTable
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] numRow = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+            int i = 1;
+
+            while(i < 13)
+            {
+                int x = 0;
+                while (x < 12)
+                {
+                    if (i * numRow[x] > 99) //3digit
+                    {
+                        Console.Write(" " + i * numRow[x]);// 1 space
+                    }
+                    else if (i * numRow[x] > 9) //2digit
+                    {
+                        Console.Write("  " + i * numRow[x]);// 2 spaces
+                    }
+                    else //1digit
+                    {
+                        Console.Write("   " + i * numRow[x]);// 3 spaces
+                    }
+
+                    x++;
+                }
+
+                Console.Write("\n");
+                i++;
+            }
+                
+
+            //hold 
+            Console.ReadKey();
+        }
+    }
+}
