@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+//The first argument to your program has the path to the file you need to check the size of.
+//output: Print the size of the file in bytes
+
+namespace CheckFileSize
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string path;
+            path = args[0];
+            CheckSize(path);
+
+        }
+
+        static void CheckSize(string path)
+        {
+            long length = new System.IO.FileInfo(path).Length;
+            Console.WriteLine(length);
+        }
+    }
+}
