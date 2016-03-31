@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+    public class UnitConverter
+    {
+        int ratio;                                                 // Field 
+        public UnitConverter(int unitRatio) { ratio = unitRatio; } // Constructor
+        public int Convert(int unit) { return unit * ratio; }      // Method
+    }
+
+    class Test
+    {
+        public static void Main()
+        {
+            string userString = "";
+            int userUnit;
+
+            while(userString != "exit")
+            {
+                UnitConverter feetToInchesConverter = new UnitConverter(12);
+                UnitConverter milesToFeetConverter = new UnitConverter(5280);
+
+                Console.WriteLine("How many feet would you like to convert to inches? ");
+                userString = Console.ReadLine();
+                userUnit = Int32.Parse(userString); //convert userString to int userUnit
+
+                Console.WriteLine(userUnit.ToString() +" Feet is equal to:");
+
+                Console.WriteLine("Inches: " + feetToInchesConverter.Convert(userUnit)); //converts userUnit to inches
+                Console.WriteLine("Feet in a mile: " + milesToFeetConverter.Convert(1));
+                Console.WriteLine("Inches in a mile: " + feetToInchesConverter.Convert(milesToFeetConverter.Convert(1)));
+                Console.WriteLine();
+            }
+        }
+    }
+}
