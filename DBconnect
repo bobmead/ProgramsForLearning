@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+
+namespace databaseConnect
+{
+    class Program
+    {
+        static void Main()
+        {
+            InsertData();
+            
+        }
+
+
+        static void InsertData()
+        {
+            string name = "";
+            int age = 0;
+            string state = "";
+
+            Console.Write("Enter name: ");
+            name = Console.ReadLine();
+            Console.Write("Enter age: ");
+            age = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter state: ");
+            state = Console.ReadLine();
+
+            //This is my connection string
+            string myConn = "Server=localhost;Database=restful;Uid=bob;Password=asdf;";
+            using (MySqlConnection conn = new MySqlConnection(myConn))
+            {
+                try
+                {
+                    conn.Open();
+                    String myInsertSQL = "INSERT INTO sampledata (name, age, state) values(@name, @age, @state);";
+                    MySqlCommand cmd = new MySqlCommand(myInsertSQL, conn);
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@age", age);
+                    cmd.Parameters.AddWithValue("@state", state);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Console.Write(ex.Message);
+                }
+            }
+        }
+
+    }
+}
