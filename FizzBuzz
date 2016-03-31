@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FizzBuzz
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string path = "C:\\Users\\bob.mead\\Desktop\\fizzbuzz.txt";
+
+            //string path = args[0];
+
+            GetBuzz(path);
+
+            Console.ReadKey();
+        }
+
+        static void GetBuzz(string path)
+        {
+            foreach (string line in File.ReadLines(path))
+            {
+                if (line != "" && line != null)
+                {
+                    string[] nums = line.Split(' ');
+
+                    int x = int.Parse(nums[0]);
+                    int y = int.Parse(nums[1]);
+                    int n = int.Parse(nums[2]);
+                    
+
+                    int counter = 1;
+
+                    while (counter <= n)
+                    {
+                        //FizzBuzz
+                        if (counter % x == 0 && counter % y == 0)
+                        {
+                            Console.Write("FB" + " ");
+                        }
+                        //Fizz
+                        else if (counter % x == 0)
+                        {
+                            Console.Write("F" + " ");
+                        }
+                        //Buzz
+                        else if (counter % y == 0)
+                        {
+                            Console.Write("B" + " ");
+                        }
+                        else
+                        {
+                            Console.Write(counter + " ");
+                        }
+
+                        counter++;
+                    }
+
+                    Console.Write(Environment.NewLine);
+
+                }
+
+            }
+        }
+
+    }
+}
