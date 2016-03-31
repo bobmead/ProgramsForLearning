@@ -1,0 +1,110 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using HAP = HtmlAgilityPack;
+using Newtonsoft.Json;
+
+
+namespace KalamazooBusinessWebScrape
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //create list of bizObjs
+            List<bizObj> BusinessList = new List<bizObj>();
+            int page = 1;
+
+            while (page < 62)
+            {
+
+                using (var client = new System.Net.WebClient())
+                {
+                    var filename = System.IO.Path.GetTempFileName();
+
+                    client.DownloadFile("http://www.downtownkalamazoo.org/Visit/Business-Directory.aspx?page=" + page, filename);
+
+                    var doc = new HAP.HtmlDocument();
+                    doc.Load(filename);
+
+                    var root = doc.DocumentNode;
+
+                    var a_nodes = root.SelectNodes("//div[@class='business-list']").ToList();
+
+
+
+                    foreach (var a_node in a_nodes)
+                    {
+
+                        //Console.WriteLine("TEXT: {0}", a_node.InnerText.Trim());
+
+                        //replace nbsp with ' '
+                        string data = a_node.InnerText.Trim();
+                        data = Regex.Replace(data, @"&nbsp;", " ", RegexOptions.IgnoreCase);
+                        data = data.Replace("\r", "");
+
+                        //split by line break
+                        String[] test = data.Split('\n');
+                        //Console.WriteLine(test[0]);
+
+                        string a = "";
+                        if (test[0] != null)
+                            a = test[0];
+
+                        string b = "";
+                        if (test[1] != null)
+                            b = test[1];
+
+                        string c = "";
+                        if (test[2] != null)
+                            c = test[2];
+
+                        string d = "";
+                        if (test.Length == 4)
+                            if (test[3] != null)
+                                d = test[3];
+
+                        //construct object
+                        bizObj biz = new bizObj(a, b, c, d);
+                        //add to list of objects
+                        BusinessList.Add(biz);
+                        System.IO.File.AppendAllText(@"C:\Users\bob.mead\Desktop\bizObjs.txt", JsonConvert.SerializeObject(biz, Formatting.Indented) + ",");
+
+                    }
+
+                    Console.WriteLine(BusinessList.Count);
+
+                }
+
+                //go to next page
+                page++;
+            }
+
+            Console.ReadKey();
+        }
+    }
+
+
+    /// <summary>
+    /// ///////////////
+    /// </summary>
+
+    class bizObj
+    {
+        public string name { get; set; }
+        public string address { get; set; }
+        public string phone { get; set; }
+        public string site { get; set; }
+
+        public bizObj(string name, string address, string phone, string site)
+        {
+            this.name = name;
+            this.address = address;
+            this.phone = phone;
+            this.site = site;
+        }
+    }
+}
